@@ -25,7 +25,7 @@ class MyApp(QtWidgets.QWidget):
         self.title.setFont(QtGui.QFont('Arial', 20))
         self.type = QtWidgets.QLabel("Annotation partiation")
         self.type_select = QtWidgets.QComboBox()
-        self.type_select.addItems(["1-250","251-500","501-750","751-1000"])
+        self.type_select.addItems(["1-250","250-500","500-750","750-1000"])
         self.progress = QtWidgets.QLabel("Annotation Progress")
         self.progressBar = QtWidgets.QProgressBar()
         self.progressBar.setObjectName("progressBar")
@@ -83,7 +83,7 @@ class MyApp(QtWidgets.QWidget):
             print(new_file,filename)
             os.rename(filename,new_file)
         df = pd.read_csv('validation.csv')
-        if self.type_select.currentText() == '100-250':
+        if self.type_select.currentText() == '1-250':
             self.filename = "annotation_1_250.csv"
             df = df.iloc[:250,:]
         elif self.type_select.currentText() == '251-500':
@@ -93,8 +93,8 @@ class MyApp(QtWidgets.QWidget):
             self.filename = "annotation_500_750.csv"
             df = df.iloc[500:750,:]
         else:
-            self.filename = "annotation_750_100.csv"
-            df = df.iloc[750:1000,:]
+            self.filename = "annotation_750_1000.csv"
+            df = df.iloc[750:999,:]
         self.df = df
         self.annotate()
     def annotate(self):
