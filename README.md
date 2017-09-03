@@ -2,15 +2,15 @@
 This tool helps to annotate the amazon reviews
 
 Steps
-1. Install Annaconda with python version 3.6
-2. Extract the Annotation_prj.
-2. Run annotation tool.
+1. Install Annaconda with python version 3.6 [a link] (https://www.anaconda.com/download/)
+2. Download the tool from the link [a link] (https://github.com/kantharajucn/review_annotation_tool)
+2. Exract tehe tool and go to the extracted folder/annotation and run the below command to run the tool
    >python myapp.py
-3. Choose for which you are doing the annotation like "Helpfulness" or "Spam"
+3. Choose the partition for which you are doing the annotation
 4. Click the button "Start tool"
-5. Choose the rating for your chosen type(Note: for helpfulness 1-100 and for spam either spam or non spam)
+5. Choose the rating(Note: for helpfulness 1-100 and for spam either spam or non spam)
 6. After finishing all the reviews click on stop tool
-7. Send me the files generated in the same directory for helpfulness annotation_helpfulness.csv and for spam annotation_spam.csv
+7. Send me the files generated in the same directory with name annotation*.csv
 8. Also send me the time taken which will print on the comsole
 
 Note:
