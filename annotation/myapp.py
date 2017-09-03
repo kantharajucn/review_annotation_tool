@@ -4,6 +4,7 @@ import pandas as pd
 import csv
 import os
 import time
+import os, glob
 from PyQt5.QtWidgets import QWidget
 
 
@@ -22,9 +23,9 @@ class MyApp(QtWidgets.QWidget):
         self.hlayout1 = QtWidgets.QGridLayout()
         self.title = QtWidgets.QLabel("Annotation Tool")
         self.title.setFont(QtGui.QFont('Arial', 20))
-        self.type = QtWidgets.QLabel("Annotation for")
+        self.type = QtWidgets.QLabel("Annotation partiation")
         self.type_select = QtWidgets.QComboBox()
-        self.type_select.addItems(["Helpfulness","Spam"])
+        self.type_select.addItems(["1-250","251-500","501-750","751-1000"])
         self.progress = QtWidgets.QLabel("Annotation Progress")
         self.progressBar = QtWidgets.QProgressBar()
         self.progressBar.setObjectName("progressBar")
@@ -77,15 +78,23 @@ class MyApp(QtWidgets.QWidget):
     def startAnnotation(self):
         print("Annotation is started")
         self.start_time =time.time()
+        for filename in glob.glob("./annotation*.csv"):
+            new_file = filename + "." + str(self.start_time)
+            print(new_file,filename)
+            os.rename(filename,new_file)
         df = pd.read_csv('validation.csv')
-        if self.type_select.currentText() == 'Helpfulness':
-            self.spam.setEnabled(False)
-            self.helpful.setEnabled(True)
-            self.flag = 0
+        if self.type_select.currentText() == '100-250':
+            self.filename = "annotation_1_250.csv"
+            df = df.iloc[:250,:]
+        elif self.type_select.currentText() == '251-500':
+            self.filename = "annotation_250_500.csv"
+            df = df.iloc[250:500,:]
+        elif self.type_select.currentText() == '501-750':
+            self.filename = "annotation_500_750.csv"
+            df = df.iloc[500:750,:]
         else:
-            self.helpful.setEnabled(False)
-            self.spam.setEnabled(True)
-            self.flag = 1
+            self.filename = "annotation_750_100.csv"
+            df = df.iloc[750:1000,:]
         self.df = df
         self.annotate()
     def annotate(self):
@@ -94,16 +103,10 @@ class MyApp(QtWidgets.QWidget):
         self.rtitle_edit.setText(row[1])
         self.rtext_edit.setText(row[2])
         
-        if self.flag == 0:
-            with open('annotation_helpful.csv','a+',newline='') as csv_file:
-                writer = csv.writer(csv_file)
-                text = [row[0],row[1],self.helpful.currentText()]
-                writer.writerow(text)
-        else:
-            with open('annotation_spam.csv','a+',newline='') as csv_file:
-                writer = csv.writer(csv_file)
-                text = [row[0],row[1],self.helpful.currentText()]
-                writer.writerow(text)
+        with open(self.filename,'a+',newline='') as csv_file:
+            writer = csv.writer(csv_file)
+            text = [row[0],row[1],self.helpful.currentText(),self.spam.currentText()]
+            writer.writerow(text)
     def increment(self):
         self.counter +=1
         
