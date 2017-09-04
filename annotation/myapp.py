@@ -12,7 +12,7 @@ class MyApp(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
-        self.counter = 1
+        self.counter = 0
         self.df = None
         self.flag = 0
         self.completed = 0
@@ -48,10 +48,10 @@ class MyApp(QtWidgets.QWidget):
         self.start.layout().setDirection(QtWidgets.QBoxLayout.LeftToRight)
         self.vote = QtWidgets.QLabel("User Rating")
         self.helpful = QtWidgets.QComboBox()
-        nums = [str(i) for i in range(1,101)]
+        nums = ["--HELPFULNESS--","0","1","2","3","4","5","6","7","8","9","10"]
         self.helpful.addItems(nums)
         self.spam = QtWidgets.QComboBox()
-        self.spam.addItems(["Spam","Non Spam"])
+        self.spam.addItems(["--SPAM--","Spam","Non-spam"])
         
         self.hlayout1.addWidget(self.title,0,0,1,3,QtCore.Qt.AlignCenter)
         self.hlayout1.addWidget(self.type,1,0)
@@ -86,10 +86,10 @@ class MyApp(QtWidgets.QWidget):
         if self.type_select.currentText() == '1-250':
             self.filename = "annotation_1_250.csv"
             df = df.iloc[:250,:]
-        elif self.type_select.currentText() == '251-500':
+        elif self.type_select.currentText() == '250-500':
             self.filename = "annotation_250_500.csv"
             df = df.iloc[250:500,:]
-        elif self.type_select.currentText() == '501-750':
+        elif self.type_select.currentText() == '500-750':
             self.filename = "annotation_500_750.csv"
             df = df.iloc[500:750,:]
         else:
@@ -98,21 +98,26 @@ class MyApp(QtWidgets.QWidget):
         self.df = df
         self.annotate()
     def annotate(self):
-        row = self.df.iloc[self.counter]
-        self.rid_edit.setText(row[0])
-        self.rtitle_edit.setText(row[1])
-        self.rtext_edit.setText(row[2])
-        
-        with open(self.filename,'a+',newline='') as csv_file:
-            writer = csv.writer(csv_file)
-            text = [row[0],row[1],self.helpful.currentText(),self.spam.currentText()]
-            writer.writerow(text)
+        if self.counter > 9:
+            print("All reviews are completed")
+            return 0
+        self.row = self.df.iloc[self.counter]
+        self.rid_edit.setText(self.row[0])
+        self.rtitle_edit.setText(self.row[1])
+        self.rtext_edit.setText(self.row[2])
+
     def increment(self):
         self.counter +=1
         
         if self.completed < 100:
             self.completed = (self.counter/len(self.df.index))*100
-        self.progressBar.setValue(self.completed)    
+        self.progressBar.setValue(self.completed) 
+        with open(self.filename,'a+',newline='') as csv_file:
+            writer = csv.writer(csv_file)
+            text = [self.row[0],self.row[1],self.helpful.currentText(),self.spam.currentText()]
+            writer.writerow(text)
+        self.helpful.setCurrentText("--HELPFULNESS--") 
+        self.spam.setCurrentText("--SPAM--")  
         self.annotate() 
     
     def decrement(self):
@@ -123,13 +128,19 @@ class MyApp(QtWidgets.QWidget):
         if self.completed < 100:
             self.completed -= 0.1     
         (self.counter/len(self.df.index))*100
+        with open(self.filename,'a+',newline='') as csv_file:
+            writer = csv.writer(csv_file)
+            text = [self.row[0],self.row[1],self.helpful.currentText(),self.spam.currentText()]
+            writer.writerow(text)
+        self.helpful.setCurrentText("--HELPFULNESS--") 
+        self.spam.setCurrentText("--SPAM--") 
         self.annotate() 
  
     def stopAnnotation(self):
         self.end_time =time.time()
         self.elapsed  = self.end_time - self.start_time
         print("Annotation is completed")
-        print("Time taken to finish the annotation:{0} Mins".format(self.elapsed))
+        print("Time taken to finish the annotation:{0} Seconds".format(self.elapsed))
         self.close()
 
         
