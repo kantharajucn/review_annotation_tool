@@ -2,7 +2,9 @@
 This tool helps to annotate the amazon reviews.
 
 ***Important: Review spam and helpfulness is independant, Spam review might be helpful to users.***
+
               ***Please dont communicate each other while annotating***
+              
 Steps
 1. Install Annaconda with python version 3.6 [a link] (https://www.anaconda.com/download/)
 2. Download the tool from the link [a link] (https://github.com/kantharajucn/review_annotation_tool)
