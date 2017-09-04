@@ -83,13 +83,13 @@ class MyApp(QtWidgets.QWidget):
             print(new_file,filename)
             os.rename(filename,new_file)
         df = pd.read_csv('validation.csv')
-        if self.type_select.currentText() == '1-250':
+        if self.type_select.currentText() == "1-250":
             self.filename = "annotation_1_250.csv"
             df = df.iloc[:250,:]
-        elif self.type_select.currentText() == '250-500':
+        elif self.type_select.currentText() == "250-500":
             self.filename = "annotation_250_500.csv"
             df = df.iloc[250:500,:]
-        elif self.type_select.currentText() == '500-750':
+        elif self.type_select.currentText() == "500-750":
             self.filename = "annotation_500_750.csv"
             df = df.iloc[500:750,:]
         else:

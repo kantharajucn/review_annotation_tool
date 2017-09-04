@@ -1,7 +1,11 @@
 # review_annotation_tool
-This tool helps to annotate the amazon reviews
+This tool helps to annotate the amazon reviews.
 
-Steps
+***Important: Review spam and helpfulness is independant, Spam review might be helpful to users.***
+
+***Please dont communicate each other while annotating***
+              
+## Steps
 1. Install Annaconda with python version 3.6 [a link] (https://www.anaconda.com/download/)
 2. Download the tool from the link [a link] (https://github.com/kantharajucn/review_annotation_tool)
 2. Exract tehe tool and go to the extracted folder/annotation and run the below command to run the tool
@@ -13,14 +17,14 @@ Steps
 7. Send me the files generated in the same directory with name annotation*.csv
 8. Also send me the time taken which will print on the comsole
 
-Note:
+***Note:***
 1. Helpfulness:
 
    1. Give the ratings from 1-100 based on your decision on whether you feel the review helpful.
    2. rating 0 means less helpful and 100 means more helpful.
    3. Please also give me feedback what is the criteria you choose to tell whether the review helpful or not like (Easy of reading, Subject inside the review)
 
-2. SPam
+2. Spam
    1. Choose whether the review is fake or not.
    2. Below are few examples of fake or and real reviews.
 
