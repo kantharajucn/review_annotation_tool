@@ -98,7 +98,7 @@ class MyApp(QtWidgets.QWidget):
         self.df = df
         self.annotate()
     def annotate(self):
-        if self.counter > 9:
+        if self.counter > 249:
             print("All reviews are completed")
             return 0
         self.row = self.df.iloc[self.counter]
