@@ -23,9 +23,9 @@ class MyApp(QtWidgets.QWidget):
         self.hlayout1 = QtWidgets.QGridLayout()
         self.title = QtWidgets.QLabel("Annotation Tool")
         self.title.setFont(QtGui.QFont('Arial', 20))
-        self.type = QtWidgets.QLabel("Annotation partiation")
+        self.type = QtWidgets.QLabel("Annotation type")
         self.type_select = QtWidgets.QComboBox()
-        self.type_select.addItems(["1-250","250-500","500-750","750-1000"])
+        self.type_select.addItems(["Sequential","Random"])
         self.progress = QtWidgets.QLabel("Annotation Progress")
         self.progressBar = QtWidgets.QProgressBar()
         self.progressBar.setObjectName("progressBar")
@@ -74,32 +74,69 @@ class MyApp(QtWidgets.QWidget):
         self.start.rejected.connect(self.stopAnnotation)
         self.prev.clicked.connect(self.decrement)
         self.next.clicked.connect(self.increment)
+
     
     def startAnnotation(self):
         print("Annotation is started")
         self.start_time =time.time()
         for filename in glob.glob("./annotation*.csv"):
             new_file = filename + "." + str(self.start_time)
-            print(new_file,filename)
             os.rename(filename,new_file)
         df = pd.read_csv('validation.csv')
-        if self.type_select.currentText() == "1-250":
-            self.filename = "annotation_1_250.csv"
-            df = df.iloc[:250,:]
-        elif self.type_select.currentText() == "250-500":
-            self.filename = "annotation_250_500.csv"
-            df = df.iloc[250:500,:]
-        elif self.type_select.currentText() == "500-750":
-            self.filename = "annotation_500_750.csv"
-            df = df.iloc[500:750,:]
+        if self.type_select.currentText() == "Sequential":
+            self.filename = "annotation_sequential.csv"
+            df = df
         else:
-            self.filename = "annotation_750_1000.csv"
-            df = df.iloc[750:999,:]
+            self.filename = "annotation_random.csv"
+            df = df.sample(frac=1)
         self.df = df
         self.annotate()
     def annotate(self):
-        if self.counter > 249:
-            print("All reviews are completed")
+        msg = QtWidgets.QMessageBox()
+        msg.setIcon(QtWidgets.QMessageBox.Information)
+        if self.counter == 24:
+            msg.setText("You have completed 25 reviews take rest for 5 minutes")
+            msg.exec_()
+            self.end_time = time.time()
+            self.elapsed = self.end_time - self.start_time
+            print("Time taken to finish 1-25:{0} Seconds".format(self.elapsed))
+            self.next.setEnabled(False)
+            time.sleep(300)
+            msg.setText("Resume annotation")
+            msg.exec_()
+            self.next.setEnabled(True)
+            self.start_time = time.time()
+        if self.counter == 49:
+            msg.setText("You have completed 50 reviews take rest for 10 minutes")
+            msg.exec_()
+            self.end_time = time.time()
+            self.elapsed = self.end_time - self.start_time
+            print("Time taken to finish 25-50:{0} Seconds".format(self.elapsed))
+            self.next.setEnabled(False)
+            time.sleep(300)
+            msg.setText("Resume annotation")
+            msg.exec_()
+            self.next.setEnabled(True)
+            self.start_time = time.time()
+        if self.counter == 74:
+            msg.setText("YOu have completed 75 reviews take rest for 10 minutes")
+            msg.exec_()
+            self.end_time = time.time()
+            self.elapsed = self.end_time - self.start_time
+            print("Time taken to finish 50-75:{0} Seconds".format(self.elapsed))
+            self.next.setEnabled(False)
+            time.sleep(300)
+            msg.setText("Resume annotation")
+            msg.exec_()
+            self.next.setEnabled(True)
+            self.start_time = time.time()
+        if self.counter == 99:
+            msg.setText("You have finished all reviews")
+            msg.exec_()
+            self.end_time = time.time()
+            self.elapsed = self.end_time - self.start_time
+            print("Time taken to finish 75-100:{0} Seconds".format(self.elapsed))
+
             return 0
         self.row = self.df.iloc[self.counter]
         self.rid_edit.setText(self.row[0])
@@ -108,10 +145,12 @@ class MyApp(QtWidgets.QWidget):
 
     def increment(self):
         self.counter +=1
-        
+        msg = QtWidgets.QMessageBox()
+        msg.setIcon(QtWidgets.QMessageBox.Information)
         if self.completed < 100:
             self.completed = (self.counter/len(self.df.index))*100
-        self.progressBar.setValue(self.completed) 
+        self.progressBar.setValue(self.completed)
+
         with open(self.filename,'a+',newline='') as csv_file:
             writer = csv.writer(csv_file)
             text = [self.row[0],self.row[1],self.helpful.currentText(),self.spam.currentText()]
