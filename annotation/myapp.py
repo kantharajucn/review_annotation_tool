@@ -107,7 +107,7 @@ class MyApp(QtWidgets.QWidget):
             self.next.setEnabled(True)
             self.start_time = time.time()
         if self.counter == 49:
-            msg.setText("You have completed 50 reviews take rest for 10 minutes")
+            msg.setText("You have completed 50 reviews take rest for 5 minutes")
             msg.exec_()
             self.end_time = time.time()
             self.elapsed = self.end_time - self.start_time
@@ -119,7 +119,7 @@ class MyApp(QtWidgets.QWidget):
             self.next.setEnabled(True)
             self.start_time = time.time()
         if self.counter == 74:
-            msg.setText("YOu have completed 75 reviews take rest for 10 minutes")
+            msg.setText("YOu have completed 75 reviews take rest for 5 minutes")
             msg.exec_()
             self.end_time = time.time()
             self.elapsed = self.end_time - self.start_time
