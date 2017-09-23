@@ -101,7 +101,7 @@ class MyApp(QtWidgets.QWidget):
             self.elapsed = self.end_time - self.start_time
             print("Time taken to finish 1-25:{0} Seconds".format(self.elapsed))
             self.next.setEnabled(False)
-            time.sleep(3)
+            time.sleep(300)
             msg.setText("Resume annotation")
             msg.exec_()
             self.next.setEnabled(True)
@@ -113,7 +113,7 @@ class MyApp(QtWidgets.QWidget):
             self.elapsed = self.end_time - self.start_time
             print("Time taken to finish 25-50:{0} Seconds".format(self.elapsed))
             self.next.setEnabled(False)
-            time.sleep(3)
+            time.sleep(300)
             msg.setText("Resume annotation")
             msg.exec_()
             self.next.setEnabled(True)
@@ -125,7 +125,7 @@ class MyApp(QtWidgets.QWidget):
             self.elapsed = self.end_time - self.start_time
             print("Time taken to finish 50-75:{0} Seconds".format(self.elapsed))
             self.next.setEnabled(False)
-            time.sleep(3)
+            time.sleep(300)
             msg.setText("Resume annotation")
             msg.exec_()
             self.next.setEnabled(True)
