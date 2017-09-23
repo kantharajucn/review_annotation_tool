@@ -101,7 +101,7 @@ class MyApp(QtWidgets.QWidget):
             self.elapsed = self.end_time - self.start_time
             print("Time taken to finish 1-25:{0} Seconds".format(self.elapsed))
             self.next.setEnabled(False)
-            time.sleep(300)
+            time.sleep(3)
             msg.setText("Resume annotation")
             msg.exec_()
             self.next.setEnabled(True)
@@ -113,7 +113,7 @@ class MyApp(QtWidgets.QWidget):
             self.elapsed = self.end_time - self.start_time
             print("Time taken to finish 25-50:{0} Seconds".format(self.elapsed))
             self.next.setEnabled(False)
-            time.sleep(300)
+            time.sleep(3)
             msg.setText("Resume annotation")
             msg.exec_()
             self.next.setEnabled(True)
@@ -125,7 +125,7 @@ class MyApp(QtWidgets.QWidget):
             self.elapsed = self.end_time - self.start_time
             print("Time taken to finish 50-75:{0} Seconds".format(self.elapsed))
             self.next.setEnabled(False)
-            time.sleep(300)
+            time.sleep(3)
             msg.setText("Resume annotation")
             msg.exec_()
             self.next.setEnabled(True)
@@ -136,8 +136,11 @@ class MyApp(QtWidgets.QWidget):
             self.end_time = time.time()
             self.elapsed = self.end_time - self.start_time
             print("Time taken to finish 75-100:{0} Seconds".format(self.elapsed))
-
-            return 0
+            with open(self.filename,'a+',newline='') as csv_file:
+                writer = csv.writer(csv_file)
+                text = [self.row[0],self.row[1],self.helpful.currentText(),self.spam.currentText()]
+                writer.writerow(text)
+            self.close()
         self.row = self.df.iloc[self.counter]
         self.rid_edit.setText(self.row[0])
         self.rtitle_edit.setText(self.row[1])
